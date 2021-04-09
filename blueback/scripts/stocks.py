@@ -238,7 +238,7 @@ class Stock:
             print('{} Failed Data Check'.format(self.symbol))
             
 if __name__ == "__main__":
-  symbols_df = pd.read_pickle('../pickles/symbols_fmp.pkl')
+  symbols_df = pd.read_pickle('../../pickles/symbols_fmp.pkl')
   stock_symbols = [x for x in symbols_df.symbol]
   stocks_init = [Stock(x, fmp_tok, iex_tok) for x in stock_symbols]
   [x.drive() for x in stocks_init]
