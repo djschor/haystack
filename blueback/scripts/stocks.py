@@ -32,31 +32,36 @@ class Stock:
     '''
     def check_db_stock(self, symbol): 
         pass
-
-    def get_company_outlook(self, symbol, fmp_tok):
-        quer_outlook = 'https://financialmodelingprep.com/api/v4/company-outlook?symbol={}&apikey={}'.format(symbol, fmp_tok)
-        self.main = {}
+    
+    def get_company_profile(self, symbol, fmp_tok):
+        quer_profile = 'https://financialmodelingprep.com/api/v3/profile/{}?apikey={}'.format(symbol, fmp_tok)
+        self.profile = {}
         try: 
             print('  -Querying Company Outlook . . . ')
-            r_outlook = requests.get(quer_outlook).json()
-            self.main['name'] = r_outlook['profile']['companyName']
-            self.main['exchange'] = r_outlook['profile']['exchange']
-            self.main['industry'] = r_outlook['profile']['industry']
-            self.sk = "IND#{}".format(r_outlook['profile']['industry'])
-            self.main['website'] = r_outlook['profile']['website']
-            self.main['description'] = r_outlook['profile']['description']
-            self.main['ceo'] = r_outlook['profile']['ceo']
-            self.main['sector'] = r_outlook['profile']['sector']
-            self.main['country'] = r_outlook['profile']['country']
-            self.main['fullTimeEmployees'] = r_outlook['profile']['fullTimeEmployees']
-            self.main['address'] = r_outlook['profile']['address']
-            self.main['city'] = r_outlook['profile']['city']
-            self.main['state'] = r_outlook['profile']['state']
-            self.main['zip'] = r_outlook['profile']['zip']
-            print('    Successful\n    Added Main Info for {}'.format(symbol))
+            r_profile = requests.get(quer_profile).json()
+            self.profile['name'] = r_profile[0]['companyName']
+            self.profile['currency'] = r_profile[0]['currency']
+            self.profile['exchange'] = r_profile[0]['exchangeShortName']
+            self.profile['industry'] = r_profile[0]['industry']
+            self.sk = "IND#{}".format(r_profile[0]['industry'])
+            self.profile['website'] = r_profile[0]['website']
+            self.profile['description'] = r_profile[0]['description']
+            self.profile['ceo'] = r_profile[0]['ceo']
+            self.profile['sector'] = r_profile[0]['sector']
+            self.profile['country'] = r_profile[0]['country']
+            self.profile['fullTimeEmployees'] = r_profile[0]['fullTimeEmployees']
+            self.profile['address'] = r_profile[0]['address']
+            self.profile['city'] = r_profile[0]['city']
+            self.profile['state'] = r_profile[0]['state']
+            self.profile['zip'] = r_profile[0]['zip']
+            self.profile['price'] = r_profile[0]['zip']
+            self.profile['dcf']  = r_profile[0]['dcf']
+            self.profile['image']  = r_profile[0]['image']
+            self.profile['ipoDate']  = r_profile[0]['ipoDate']
+            print('    Successful\n    Added Profile Info for {}'.format(symbol))
         except:
-            print(requests.get(quer_outlook).text)
-            self.main = None
+            print(requests.get(quer_profile).text)
+            self.profile = None
             
     def get_dcf(self, symbol, fmp_tok):
         quer_dcf = 'https://financialmodelingprep.com/api/v3/company/discounted-cash-flow/{}?apikey={}'.format(symbol, fmp_tok)
@@ -182,7 +187,7 @@ class Stock:
                     self.growth,
                     self.dcf,
                     self.key_metrics,
-                    self.main]
+                    self.profile]
         nones = 0
         for d in self_list:
             if d is None:
@@ -192,6 +197,7 @@ class Stock:
             return False
         else:
             return True
+
     def save_stock_dyno(self):
         # dynamoDB config
         dynamo_client = boto3.client('dynamodb')
@@ -202,7 +208,7 @@ class Stock:
         item['pk'] = self.pk
         item['sk'] = self.sk
         item['symbol'] = self.symbol
-        item['main'] = json.dumps(self.main)
+        item['profile'] = json.dumps(self.profile)
         item['key_metrics'] = json.dumps(self.key_metrics)
         item['growth'] = json.dumps(self.growth)
         item['dcf'] = json.dumps(self.dcf)
@@ -222,7 +228,7 @@ class Stock:
     def drive(self):
         print('\n\nStarting engine for {}'.format(self.symbol))
         self.check_db_stock(self.symbol)
-        self.get_company_outlook(self.symbol, self.fmp_tok)
+        self.get_company_profile(self.symbol, self.fmp_tok)
         self.get_dcf(self.symbol, self.fmp_tok)
         self.get_key_metrics(self.symbol, self.fmp_tok)
         self.get_company_growth(self.symbol, self.fmp_tok)
