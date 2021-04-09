@@ -1,9 +1,6 @@
 import pandas as pd
 import urllib.request as ur
 import requests
-import matplotlib.pyplot as plt
-from iexfinance.stocks import Stock
-from iexfinance.stocks import get_historical_data
 from datetime import datetime
 import os
 import pickle
@@ -174,7 +171,7 @@ class Stock:
             self.news = r_news
             print('    Successful\n    Added 50 latest news articles for {}'.format(symbol))
         except:
-            print('error: ', requests.get(quer_ratios).text)
+            print('error: ', requests.get(quer_news).text)
             self.news = None
             
     def check_data(self):
