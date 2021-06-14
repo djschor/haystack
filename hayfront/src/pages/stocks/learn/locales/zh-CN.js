@@ -1,0 +1,18 @@
+export default {
+  'stockAndlearn.monitor.trading-activity': '活动实时交易情况',
+  'stockAndlearn.monitor.total-transactions': '今日交易总额',
+  'stockAndlearn.monitor.sales-target': '销售目标完成率',
+  'stockAndlearn.monitor.remaining-time': '活动剩余时间',
+  'stockAndlearn.monitor.total-transactions-per-second': '每秒交易总额',
+  'stockAndlearn.monitor.activity-forecast': '活动情况预测',
+  'stockAndlearn.monitor.efficiency': '券核效率',
+  'stockAndlearn.monitor.ratio': '跳出率',
+  'stockAndlearn.monitor.proportion-per-category': '各品类占比',
+  'stockAndlearn.monitor.fast-food': '中式快餐',
+  'stockAndlearn.monitor.western-food': '西餐',
+  'stockAndlearn.monitor.hot-pot': '火锅',
+  'stockAndlearn.monitor.waiting-for-implementation': 'Waiting for implementation',
+  'stockAndlearn.monitor.popular-searches': '热门搜索',
+  'stockAndlearn.monitor.resource-surplus': '资源剩余',
+  'stockAndlearn.monitor.fund-surplus': '补贴资金剩余',
+};
